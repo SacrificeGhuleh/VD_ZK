@@ -1,0 +1,134 @@
+\documentclass[10pt,a4paper, table]{article}
+\usepackage[top=1.36in, bottom=1.36in, left=0.98in, right=0.98in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xcolor,listings}
+\usepackage{textcomp}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{listings}
+\usepackage{fontspec,minted}
+\usepackage{subfig}
+\usepackage{xevlna}
+
+\title{Vizualizace dat \\ příprava na zkoušku}
+\author{Richard Zvonek}
+
+
+\definecolor{backcolour}{rgb}{0.1686,0.1686,0.1686}
+
+\newminted{c++}{
+  style=monokai,,
+  bgcolor=backcolour,
+  fontsize=\small,
+  frame=lines
+}
+
+\setmonofont{[JetBrainsMono-Regular.ttf]}[Contextuals=Alternate,Ligatures=TeX]
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\newpage
+
+\section{Základní členění grafických forem užitých při vizualizaci dat a jejich stručný historický přehled}
+Při vizualizaci dat rozdělujeme grafiku na dva základní typy - prezentační a explorační.
+\subsection{Explorační grafika}
+Explorační grafika se používá primárně pro potřeby výzkumu a dalšího zpracování. Měla by být precizní, obsahovat definice, správně uvedené jednotky, osy, popisky, legendy\dots
+
+\subsection{Prezentační grafika}
+Prezentační grafika cílí na masové využití, měla by být zjednodušená a přehledná. Můžou být vynechány některé nadbytečné prvky potřebné v explorační grafice.
+
+\subsection{Historie}
+Historicky, jedny z nejstarších zobrazovaných dat byly data pro navigaci (mapy, pozice hvězd). Egypťané už ve 2. století př.n.l užívali základní myšlenku souřadného systému, která byla v nezměněné formě používána až do 14. století. \par
+Na začátku 17. století se začaly rozmáhat vizualizace měření matematicko-fyzikálních dat, zároveň se začaly objevovat i statistická měření (Vzdálenost Toledo-Řím, Sluneční skvrny). \par
+V 18. století se postupně zlepšovaly mapy a přidávaly se nové informace, izolinie (vrstevnice). Lambert přišel s interpolací dat získaných empirickým měřením. Playfair přišel se spojnicovým, sloupcovým a koláčovým grafem. \par
+V 19. století se díky modernějším možnostem zpracování grafiky se vizualizace dat velmi posunula. Vznikla většina do dnes používaných typů grafů pro statistiku: Sloupcové a koláčové grafy, histogramy, bodové grafy\dots V kartografii se více objevovaly komplexní atlasy map, rozšířila se i symbolika. Grafy fyzikálních úkazů se začaly častěji objevovat ve vědeckých článcích. Objevilo se stínování pro vyjádření poměru (negramotnost ve Francii. Moderní mapy se začaly používat pro ekonomické plánování. \par
+Konec 19. století se považuje za zlatou éru statistické grafiky, objevily se první zdařilé 3D grafy, mapy se stávaly ještě podrobnějšími, do statistických atlasů se zobrazovalo více a více dat\dots \par
+Od začátku až do poloviny 20. století se vizualizace dat moc neposouvala, nebyl moc velký technický pokrok který by vizualizaci posunul. Vizualizace byly spíše formální a věcné. \par
+V 50. letech se vznikem fortranu vznikl nový způsob zpracování dat. S rozšířením počítačů, programovacích jazyků a nových nástrojů se zjednodušila tvorba grafiky. Vznikly nové způsoby vstupu i výstupu informací. Vznikly první geografické informační systémy a první 2D a 3D interaktivní systémy. \par
+Poslední čtvrtina 20. století se nesla ve znamení dat s vyšší dimenzí, a ve zlepšování interaktivity.
+
+\clearpage
+\section{Definice  pojmu  dataset, spojitost, charakteristika dimenzí; vzorkovaná data a jejich zpětná rekonstrukce, formální zápis, příklady bázových funkcí a způsobů členění domény}
+
+\subsection{Dataset}
+Dataset je soubor informací složený z jednotlivých prvků, se kterými lze manipulovat jako s jedním celkem. Např. položka datasetu měření teploty může být složena z času, naměřené teploty a místa měření.
+
+\subsubsection{Spojitost}
+Spojitý dataset je tvořen pomocí spojité funkce s daným definičním oborem a oborem hodnot. Z definice spojité funkce vyplývá, že hodnoty spojitého datasetu se mění plynule. Typicky není jednoduché měřit reálná data spojitě a je potřeba je vzorkovat, viz \hyperref[sec:sampling]{\ref{sec:sampling} Vzorkovaná data a jejich zpětná rekonstrukce}.
+
+\subsubsection{Charakteristika dimenzí}
+Dimenzí datasetu se rozumí počet jednotlivých prvků v rámci jednoho měření, pro tabulková data se jedná o počet sloupců. Např. dimenze datasetu měření teploty s informací o pozici, čase a měřené teplotě je 3.\par
+Topologickou dimenzí se rozumí, kolika dimenzionálním prostor je potřeba pro zobrazení dat. Pro vizualizaci se v zásadě volí maximálně 3 dimenze. Rozdělujeme podle počtu dimenzí:
+$\left\{\begin{matrix}
+    1 & \textrm{Křivka}            \\
+    2 & \textrm{Plocha}            \\
+    3 & \textrm{Volumetrická data}
+  \end{matrix}\right.$
+
+\subsection{Vzorkovaná data a jejich zpětná rekonstrukce} \label{sec:sampling}
+Spojitá data není často možné přesně naměřit spojitě. Proto je potřeba data vzorkovat. Zpětná rekonstrukce je poté možná formou aproximace, není možné získat absolutně přesná data. Rekonstrukce bere v potaz navzorkované hodnoty a z nich se snaží dopočítat aproximaci původní hodnoty. \par
+Vzorkování je možné provádět rovnoměrně, nebo nerovnoměrně. Nerovnoměrné vzorkování je možné provést např. s ohledem na distribuci významnosti hodnot.
+
+\subsubsection{Formální zápis}
+Rekonstruovanou hodnotu lze vyjádřit jako sumu funkčních hodnot násobenou bázovou funkcí.
+
+\subsubsection{Příklady bázových funkcí a způsobů členění domény}
+
+\paragraph{Konstantní bázové funkce}
+Jedná se o interpolaci nejbližším sousedem, výhodou je výpočetní nenáročnost a bezproblémová funkcionalita na libovolném počtu dimenzí. Nevýhodou je velmi špatná, nepřesná aproximace. Aproximace není příliš spojitá, je skoková.
+
+\paragraph{Lineární bázové funkce}
+Pro aproximaci se používají koeficienty pro určení vlivu funkčních hodnot původních bodů na funkční hodnotu interpolovaného bodu. Pro 2 body se změna hodnoty počítá lineárně, pro 3 body pomocí barycentrických souřadnic.
+
+\clearpage
+\section{Interpolace (skalárních) dat přímo z mračna bodů bez použití mřížky, modely barev a barevné přechody užité ve vizualizaci dat.}
+Některá data není možné jednoduše interpolovat pomocí mřížky (např. protože nejsou podle mřížky vzorkována). Takový případ může nastat např. v případě nějaké "divoké" distribuce měřených dat.Typickým případem můžou být 3D data získaná lidarem, tvořící mračno bodů. Taková data můžeme interpolovat pomocí vytvoření nějaké mřížky, nebo přímo, bez mřížky.
+\subsection{Interpolace bez mřížky}
+Interpolace bez mřížky je vhodná pro velké datasety. Není tolik náročná na paměť, ani na výpočetní výkon. Pro interpolaci se využijí RBF (radiální bázové funkce), které pro výpočet využívají vzdálenost od daného bodu. Na daný bod mají pak největší vliv nejbližší body. Jedny z nejčastějších  radiálních bázových funkcí jsou Gaussova funkce, nebo inverzní vzdálenost. S použitím radiálních bázových funkcí se pak interpolace počítá podobně, jako interpolace mřížkou. Pro normalizaci hodnot se poté používá Shepardova interpolace, která používá radiální báze, ale výpočet je zatížen sumou vzdáleností interpolačních bodů.
+\subsection{Barevné přechody}
+Barevné přechody umožňují jednoznačně a jednoduše určit informace o vizualizovaných skalárních hodnotách jako je např. absolutní hodnota, pořadí a rozdíl hodnot, nebo rychlost změny hodnoty. Důležité je poté k datům vizualizovaných pomocí barevných přechodů uvádět i legendu. Důležité je taky správně pracovat s barevnou škálou. Např. teplé barvy oproti studeným barvám přitahují vyšší pozornost. Je tedy vhodné teplé barvy použít pro hodnoty, které chceme zdůraznit. Důležitý je také kontext. Cílový uživatel má zažitá očekávání a je vhodné je dodržet. Např. není vhodné pomocí teplých barev znázorňovat nízké teploty a pomocí studených barev vysoké teploty. Taková vizualizace není příliš přehledná. Vhodné taky je, aby barevná škála měla lineární průběh. Pokud by tomu tak nebylo, lineární průběh dat by mohl být interpretován nelineárně. \par
+Důležité také je pro barevnou škálu vybrat celkový počet barev. Pokud vybereme vysoký počet barev, je možné, že data budou splývat. Nízký počet barev ale zase bude tvořit ve výsledné vizualizaci ostré hrany. Vysoký počet barev je vhodné zvolit pro zvýraznění linearity hodnot, nízký počet je vhodný např. pro vrstevnice.
+\subsubsection{Černobílá škála}
+Černobílá škála je vhodná pro lineární data. Výhodou černobílé škály je přímý převod hodnoty na jas, nevzniká zmatení z různých odstínů různých barev. Výhoda může být i při tisku, kdy vizualizace není natolik závislá na přesných odstínech barev. Může být však problém s rozlišením dvou různých odstínů šedé barvy. Např. v případě nespojitého bodového grafu může vzniknout problém.
+\subsubsection{Škála dvou odstínů}
+Barevná škála je tvořena lineární interpolací dvou různých barev. Dalo by se říct, že černobílá škála je speciálním případem této škály. Volba dvou základních barev zásadně ovlivňuje výslednou vizualizaci. Vybrané barvy by měly být dostatečně rozdílné (ideálně komplementární barvy). Pokud jsou zvoleny dvě barvy, které nejsou příliš jasné, lze potom vizualizaci mít zobrazenou na bílém pozadí. Nevýhodou tohoto typu je pak nižší dynamický rozsah.
+\subsubsection{Tepelný škála - Heatmap}
+Tato škála intuitivně následuje teplotu materiály. Nízké hodnoty jsou tmavé, střední hodnoty mají červený odstín a vysoké hodnoty pokračují žlutými odstíny až do bílé barvy. Tepelná škála obsahuje více odstínů barev, lze tedy jednoduše rozlišit mezi více hodnotami. Jas na škále stoupá lineárně, což také napomáhá čitelnosti.
+\subsubsection{Rozlišující škála - Diverging}
+Tvorba této škály je podobná jako škála dvou odstínu. Okraje škály tvoří dvě barvy s podobným jasem. Doprostřed škály se poté vloží třetí barva, ideálně s vyšším jasem a výsledná škála vzniká lineární interpolací mezi těmito třemi barvami. Tato škála je vhodná pro zobrazení odchylky oproti střední hodnoty.
+
+
+\clearpage
+\section{Vizualizace  vektorových  polí, divergence, rotace, vektorové čáry(proudnice, charakteristické směry).}
+Vektorová data jsou v podstatě více dimenzionální skaláry. Vektor se skládá z n skalárů. Vektor může znázorňovat pozici, směr, rychlost... Většina vektorových dat je 2 nebo 3 dimenzionální.
+\subsection{Vektorová pole}
+Vektorová pole jsou více rozměrná vektorová data (vektory ve 2 nebo 3 dimenzích). Příkladem takových dat můžou být např. kapaliny, nebo proudění tlaku.
+\subsection{Divergence}
+Divergence je v podstatě součet parciálních derivací hodnot. Divergence symbolizuje přírůstek nebo úbytek v daném bodě v daném čase.
+\subsection{Rotace}
+Rotace - curl v bodě se počítá jako rozdíl derivací ve směrech. Tato hodnota znázorňuje rychlost a směr rotace v daném bodě.
+\subsection{Vektorové čáry}
+Vektorové čáry umožňují znázorňovat jak rychlost, tak i směr rotace ve vektorovém poli. Proudnice poté znázorňují přesný přesun masy z jednoho bodu do druhého v čase. Vizualizace může být pomocí spojitých čar, nebo pomocí glyfů. Glyfy mohou být ve formě čar, nebo např. pomocí 3D kuželů. Glyfy také mohou být rozmístěny uniformně, nebo s ohledem na hodnoty (v místech vyššího proudění vyšší koncentrace glyfů).
+
+\clearpage
+\section{Rekonstrukce izoploch ve 3D,algoritmus Marching cubes}
+Rekonstrukce izoploch se používá pro tvorbu ploch z mračna bodů. Může být použita např. pro simulaci povrchu kapaliny, nebo např. při procedurálním generování terénu z 3D šumové funkce.
+\subsection{Marching Cubes}
+Algoritmus Marching cubes je rozšíření algoritmu Marching squarez o třetí dimenzi. Oba algoritmy rekonstruují topologickou plochu objektů. Pro rekonstrukci je nejprve spočítat mřížku, která bude následně tvořit tělěso. Čím větší je rozlišení mřížky, tím větší je potom přesnost výsledného tělesa. Následně se provede iterpolace hodnoty v každém vrcholu mřížky pomocí všech okolních bodů. Následně se tvoří izoplocha. Pokud je hodnota menží, než prahovací hodnota, leží hodnota uvnitř tělesa. V opačném případě leží vně tělesa. Algoritmus poté prochází čtverce / krychle, počítá s jejich vrcholy a tvoří polygony plochy. Pro přesnější výsledek je vhodné vrcholy nových polygonů v rámci krychle lineárně interpolovat podle funkčních hodnot vrcholů krychle.
+\section{Tenzorová data a možnosti jejich vizualizace, příklady tenzorů druhého řádu, základní operace s tenzory}
+
+\section{Metody  vizualizace volumetrických dat, užité optické modely, způsoby klasifikace  a kompozice vzorků, možnosti interpolace}
+
+\section{Vizualizace  abstraktních dat a  jejich  charakteristika, možnosti vizualizace grafových struktur a vícerozměrných dat, redukce dimenze}
+
+
+
+\end{document}
