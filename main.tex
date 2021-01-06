@@ -130,12 +130,24 @@ Tenzor můžeme také interpretovat jako operátor, který transformuje jeden ve
 \subsection{Vizualizace}
 Vizualizace tenzorů je v zásadě složitý problém. Pro každý bod ve 3D prostoru je potřeba vizualizovat 3x3 matici dat. Pokud bychom se jednoduše pokusili vyjádřit tenzor pouze skalární hodnotou, nevedla by taková vizualizace k pochopení dat. \par
 Jednou z možných metod vizualizace tenzorů je snížení dimenze dat pomocí analýzy hlavních komponent. Další metodou může být také použití tenzorových glyfů. Pro vizualizaci pomocí glyfů je potřeba samplovat definiční obor, pro každý vzorek se poté vytvoří tenzorový glyf. Tenzorový glyf znázorňuje vlastní vektor a vlastní číslo tenzoru ve vzorkovaném bodě. Výsledným glyfem je elipsa ve 2D prostoru, nebo elipsoid ve 3D prostoru. Kromě elipsoidů lze použít i jiné tvary - kvádry, nebo válce. \par
-Použití glyfů je analogické s glyfy a vektorovými poli. Kromě glyfů lze také tenzory zobrazit pomocí vláken. Zobrazení tenzorů pomocí vláken se často používá v anatomii, pro zobrazení např. neuroný v mozku.
+Použití glyfů je analogické s glyfy a vektorovými poli. Kromě glyfů lze také tenzory zobrazit pomocí vláken. Zobrazení tenzorů pomocí vláken se často používá v anatomii, pro zobrazení např. neurony v mozku.
 
 
 \clearpage
 \section{Metody  vizualizace volumetrických dat, užité optické modely, způsoby klasifikace  a kompozice vzorků, možnosti interpolace}
+Volumetrická data jsou v podstatě skalární data ve 3D prostoru. Jednou z možností vizualizace je pomocí redukce problému do 2D nařezáním na jednotlivé snímky. Další možností je sestavení 3D izoplochy pomocí algoritmu marching cubes. Třetí možností může být přímá vizualizace dat. Izoplochu je možné renderovat pomocí metody sledování paprsku.
+\subsection{Maximum intensity projection}
+Při metodě sledování paprsků je možné přímo zobrazit nejvyšší nalezenou hodnotu.
+\subsection{Direct volume rendering}
+Pomocí metody DVR je výsledná hodnota získána postupnou integrací hodnot při průběhu paprsku.
+\subsection{Optické modely}
+Je možné volit různé optické modely podle zobrazovaných dat. Pokud zobrazujeme data, která záření pouze pohlcují, můžeme vizualizovat pouze \textbf{absorpční složku}. Pokud zobrazujeme pouze průhledné materiály, které světlo propouští, můžeme zobrazovat pouze \textbf{emisní složku}.  Tyto dva přístupy je také možné zkombinovat. Tato kombinace se často používá při DVR.
+\subsection{Klasifikace vzorků}
+Nejjednodušší klasifikace může být převod získaných dat do černobílého spektra. Lepší, komplexnější metodou může být klasifikace pomocí komplexnější funkce.
+\subsection{Interpolace}
+Při použití trilineární interpolace vznikají na tělese kruhové artefakty. Tento problém je možné řešit pomocí trikubické interpolace, kde se nepočítá interpolovaná hodnota z 6 vrcholů jedné krychle (trilineární), ale z vrcholů krychlí rozložených do $3\times3\times3$ matice. Vrcholů pro interpolaci tak vzniká celkem 64. (matice $4\times4\times4$ vzorků)
 
+\clearpage
 \section{Vizualizace  abstraktních dat a  jejich  charakteristika, možnosti vizualizace grafových struktur a vícerozměrných dat, redukce dimenze}
 
 
