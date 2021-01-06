@@ -122,9 +122,18 @@ Vektorové čáry umožňují znázorňovat jak rychlost, tak i směr rotace ve 
 \section{Rekonstrukce izoploch ve 3D,algoritmus Marching cubes}
 Rekonstrukce izoploch se používá pro tvorbu ploch z mračna bodů. Může být použita např. pro simulaci povrchu kapaliny, nebo např. při procedurálním generování terénu z 3D šumové funkce.
 \subsection{Marching Cubes}
-Algoritmus Marching cubes je rozšíření algoritmu Marching squarez o třetí dimenzi. Oba algoritmy rekonstruují topologickou plochu objektů. Pro rekonstrukci je nejprve spočítat mřížku, která bude následně tvořit tělěso. Čím větší je rozlišení mřížky, tím větší je potom přesnost výsledného tělesa. Následně se provede iterpolace hodnoty v každém vrcholu mřížky pomocí všech okolních bodů. Následně se tvoří izoplocha. Pokud je hodnota menží, než prahovací hodnota, leží hodnota uvnitř tělesa. V opačném případě leží vně tělesa. Algoritmus poté prochází čtverce / krychle, počítá s jejich vrcholy a tvoří polygony plochy. Pro přesnější výsledek je vhodné vrcholy nových polygonů v rámci krychle lineárně interpolovat podle funkčních hodnot vrcholů krychle.
+Algoritmus Marching cubes je rozšíření algoritmu Marching squares o třetí dimenzi. Oba algoritmy rekonstruují topologickou plochu objektů. Pro rekonstrukci je nejprve spočítat mřížku, která bude následně tvořit tělěso. Čím větší je rozlišení mřížky, tím větší je potom přesnost výsledného tělesa. Následně se provede iterpolace hodnoty v každém vrcholu mřížky pomocí všech okolních bodů. Následně se tvoří izoplocha. Pokud je hodnota menší, než prahovací hodnota, leží hodnota uvnitř tělesa. V opačném případě leží vně tělesa. Algoritmus poté prochází čtverce / krychle, počítá s jejich vrcholy a tvoří polygony plochy. Pro přesnější výsledek je vhodné vrcholy nových polygonů v rámci krychle lineárně interpolovat podle funkčních hodnot vrcholů krychle.
+\clearpage
 \section{Tenzorová data a možnosti jejich vizualizace, příklady tenzorů druhého řádu, základní operace s tenzory}
+Tenzorová data jsou obecně data vyššího řádu. Tenzory nultého řádu jsou skalární hodnoty, tenzory prvního řády jsou vektory, tenzory druhého řády jsou hodnoty vyjádřené maticí (např. 3x3). Tenzorem 2. řádu lze popsat např. některé vlastnosti těles a ploch (zakřivení např.), nebo některé mechanické vlastnosti materiálů (zatížení působící na materiál, tah v jednotlivých osách\dots). V mozkové tkáni je rozptyl silnější ve směru neuronových vláken, lze to tedy popsat tenzorem 2. řádu. \par
+Tenzor můžeme také interpretovat jako operátor, který transformuje jeden vektor v jiný vektor.
+\subsection{Vizualizace}
+Vizualizace tenzorů je v zásadě složitý problém. Pro každý bod ve 3D prostoru je potřeba vizualizovat 3x3 matici dat. Pokud bychom se jednoduše pokusili vyjádřit tenzor pouze skalární hodnotou, nevedla by taková vizualizace k pochopení dat. \par
+Jednou z možných metod vizualizace tenzorů je snížení dimenze dat pomocí analýzy hlavních komponent. Další metodou může být také použití tenzorových glyfů. Pro vizualizaci pomocí glyfů je potřeba samplovat definiční obor, pro každý vzorek se poté vytvoří tenzorový glyf. Tenzorový glyf znázorňuje vlastní vektor a vlastní číslo tenzoru ve vzorkovaném bodě. Výsledným glyfem je elipsa ve 2D prostoru, nebo elipsoid ve 3D prostoru. Kromě elipsoidů lze použít i jiné tvary - kvádry, nebo válce. \par
+Použití glyfů je analogické s glyfy a vektorovými poli. Kromě glyfů lze také tenzory zobrazit pomocí vláken. Zobrazení tenzorů pomocí vláken se často používá v anatomii, pro zobrazení např. neuroný v mozku.
 
+
+\clearpage
 \section{Metody  vizualizace volumetrických dat, užité optické modely, způsoby klasifikace  a kompozice vzorků, možnosti interpolace}
 
 \section{Vizualizace  abstraktních dat a  jejich  charakteristika, možnosti vizualizace grafových struktur a vícerozměrných dat, redukce dimenze}
